@@ -1,13 +1,13 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
 import AppContext from '../context/appContext';
-const ProductCard = ({ id, name, image, price }) => {
+const OrderProductCard = ({product,quantity}) => {
     const context = useContext(AppContext)
     const {userDetails} = context
+    const {_id:id, title:name, image, price} =product
     const router = useRouter()
     const primaryColor = "#F2994A"
     // console.log(id);
@@ -48,18 +48,12 @@ const ProductCard = ({ id, name, image, price }) => {
                 <Card.Title title={<Text style={{ fontFamily: "PoppinsSemibold" }}>{name}</Text>}
                     subtitle=
                     {
-                        <View style={{ flexDirection: "row" }}>
-                            <FontAwesome name="star" size={16} color="#F2C71C" />
-                            <FontAwesome name="star" size={16} color="#F2C71C" />
-                            <FontAwesome name="star" size={16} color="#F2C71C" />
-                            <FontAwesome name="star" size={16} color="#F2C71C" />
-                            <FontAwesome name="star" size={16} color={tertiaryColor} />
-                        </View>
+                        <Text>Quantity {quantity}</Text>
                     } />
                 <Card.Content>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <Text style={{ fontFamily: "PoppinsSemibold" }}>PKR {price}</Text>
-                        <Ionicons name="bag-handle-outline" size={24} color={"#4999F1"} />
+                        {/* <Ionicons name="bag-handle-outline" size={24} color={"#4999F1"} /> */}
                     </View>
                 </Card.Content>
 
@@ -68,4 +62,4 @@ const ProductCard = ({ id, name, image, price }) => {
     )
 }
 
-export default ProductCard
+export default OrderProductCard

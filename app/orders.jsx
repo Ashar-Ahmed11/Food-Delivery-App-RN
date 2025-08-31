@@ -3,12 +3,15 @@ import { useRouter } from 'expo-router';
 import { useContext } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FavouriteCard from '../../components/favouriteCard';
-import AppContext from '../../context/appContext';
-const Favourite = () => {
+import OrderCard from '../components/orderCard';
+import AppContext from '../context/appContext';
+const Orders = () => {
     const router = useRouter()
     const context = useContext(AppContext)
     const {userDetails} = context
+
+    console.log(userDetails);
+    
     const primaryColor = "#F2994A"
     const tertiaryColor = "#EDEDED"
     const secondaryColor = "#838383"
@@ -22,7 +25,7 @@ const Favourite = () => {
                 </View>
                 <View style={{ padding: 10 }}>
                     <Text style={{ color: "black" ,fontFamily:"PoppinsSemibold"}}>
-                        Favorite
+                        Orders
                     </Text>
                    
                 </View>
@@ -33,8 +36,11 @@ const Favourite = () => {
                 </View>
             </SafeAreaView>
             <ScrollView>
-                {userDetails?.favourites.map((e)=>{
-                    return <FavouriteCard key={e._id} id={e._id} name={e.title} image={e.image} price={e.price} />
+                
+                {
+                
+                [...userDetails?.orders].reverse().map((e)=>{
+                    return <OrderCard key={e._id} id={e._id} status={e.status} price={e.total} />
                 })}
                 
             </ScrollView>
@@ -42,4 +48,4 @@ const Favourite = () => {
     )
 }
 
-export default Favourite
+export default Orders

@@ -46,8 +46,10 @@ const MyTheme = {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="signin" options={{ headerShown: false }} />
           <Stack.Screen name="signup" options={{ headerShown: false }} />
-          <Stack.Screen name="category" options={{ headerShown: false }} />
+          <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
           <Stack.Screen name="checkout" options={{ headerShown: false }} />
+          <Stack.Screen name="orders" options={{ headerShown: false }} />
+          <Stack.Screen name="order/[id]" options={{ headerShown: false }} />
          
           <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
           <Stack.Screen name="address" options={{ headerShown: false }} />

@@ -288,7 +288,10 @@ const Address = () => {
           initialRegion={location}
           onRegionChangeComplete={(e) => onRegionChangeCompleteFunction(e)}
 
-          style={styles.map} >
+          style={styles.map} 
+          
+          
+          >
           {/* <Marker ref={mapRef} coordinate={{ latitude: location.latitude, longitude: location.longitude }} /> */}
         </MapView>
         <View style={{ position: "absolute", top: 0, width: "100%", backgroundColor: "white" }}>

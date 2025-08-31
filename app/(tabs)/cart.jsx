@@ -29,7 +29,8 @@ const Cart = () => {
 
 
 
-
+    console.log(Array.from(cart,(({prod,quantity})=>{return {product:prod._id,quantity}})));
+    
     console.log(cartSubTotal);
     
 

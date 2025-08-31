@@ -9,11 +9,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../../context/appContext'
 const Product = () => {
     const context = useContext(AppContext)
-    const { getProduct, product ,addToCart} = context
+    const { getProduct, product, addToCart, userDetails, addToFavourite, removeFromFavourite, setProduct } = context
 
     const [quantity, setQuantity] = useState(1)
 
 
+    // console.log("This is user data in a product",userDetails);
 
     const router = useRouter()
     const { id } = useLocalSearchParams()
@@ -22,7 +23,30 @@ const Product = () => {
 
     useEffect(() => {
         getProduct(id)
+        return () => {
+            setProduct(null)
+        }
     }, [])
+
+
+    const isProductFavourite = () => {
+        if (userDetails) {
+            const userFavouriteProduct = userDetails.favourites.find((e) => e._id == id)
+            console.log('This is the favourite product', userFavouriteProduct);
+
+            if (userFavouriteProduct) {
+                console.log('This is the favourite product', userFavouriteProduct);
+
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false
+        }
+    }
 
     const primaryColor = "#F2994A"
     const tertiaryColor = "#EDEDED"
@@ -44,7 +68,7 @@ const Product = () => {
                     </View>
                     <View style={{ justifyContent: "center" }}>
 
-                        <Ionicons style={{ padding: 10, borderWidth: 1, borderColor: tertiaryColor, borderRadius: 100 }} name="heart-outline" size={24} color={"black"} />
+                        <Ionicons onPress={() => isProductFavourite() ? removeFromFavourite(id) : addToFavourite(id)} style={{ padding: 10, borderWidth: 1, borderColor: tertiaryColor, borderRadius: 100 }} name={`heart${isProductFavourite() ? "" : "-outline"}`} size={24} color={primaryColor} />
 
                     </View>
                 </SafeAreaView>
@@ -71,14 +95,14 @@ const Product = () => {
                             <Text style={{ color: secondaryColor, paddingHorizontal: 5 }}>4.3(1,2k vote)</Text>
                         </View>
                         <Text style={{ color: secondaryColor, paddingVertical: 20 }}>
-                           {product.description}
+                            {product.description}
 
                         </Text>
 
                         <View style={{ flexDirection: "row", paddingVertical: 20, paddingBottom: 100 }}>
-                            <AntDesign onPress={()=>setQuantity((e)=>e==1?1:e-1)} name="minuscircle" size={30} color={quantity>1?"black":secondaryColor} />
+                            <AntDesign onPress={() => setQuantity((e) => e == 1 ? 1 : e - 1)} name="minuscircle" size={30} color={quantity > 1 ? "black" : secondaryColor} />
                             <Text style={{ paddingHorizontal: 20, fontSize: 20 }}>{quantity}</Text>
-                            <AntDesign onPress={()=>setQuantity((e)=>e+1)} name="pluscircle" size={30} color="black" />
+                            <AntDesign onPress={() => setQuantity((e) => e + 1)} name="pluscircle" size={30} color="black" />
 
                         </View>
 
@@ -93,7 +117,7 @@ const Product = () => {
                             PKR {product.price}
                         </Text>
                     </View>
-                    <Button onPress={()=>addToCart(product,quantity)} textColor="white" style={{ borderRadius: 10, backgroundColor: "#F2994A", borderWidth: 0, paddingVertical: 2, justifyContent: "center" }} mode="outlined">
+                    <Button onPress={() => addToCart(product, quantity)} textColor="white" style={{ borderRadius: 10, backgroundColor: "#F2994A", borderWidth: 0, paddingVertical: 2, justifyContent: "center" }} mode="outlined">
                         Add To Cart
                     </Button>
 

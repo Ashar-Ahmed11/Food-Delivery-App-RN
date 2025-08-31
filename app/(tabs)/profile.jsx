@@ -7,8 +7,8 @@ import { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 import ProfileLoadingState from "../../components/profileLoadingState";
-
 import AppContext from "../../context/appContext";
 const Profile = () => {
     const pathname = usePathname()
@@ -24,8 +24,10 @@ const Profile = () => {
 
 
         await AsyncStorage.setItem("authToken", "")
-        // const data = await AsyncStorage.getItem("authToken")
         setIsLoggedIn(false)
+        Toast.info("User logged out")
+        // const data = await AsyncStorage.getItem("authToken")
+        // setIsLoggedIn(false)
         //    console.log(data);
 
 
@@ -139,7 +141,7 @@ const Profile = () => {
 
                     </View>
                     <View style={{ borderRadius: 10, boxShadow: `0px 10px 15px ${tertiaryColor}`, flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 20 }}>
-                        <View onTouchEnd={() => router.navigate("/favourite")}>
+                        <View onTouchEnd={() => router.navigate("/orders")}>
 
                             <View style={{ paddingVertical: 20, flexDirection: "row" }}>
 

@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AppContext from '../context/appContext';
 const Checkout = () => {
     const context = useContext(AppContext)
-    const { cart, subTotal, setsubTotal } = context
+    const { cart, subTotal, setsubTotal,createOrder } = context
     const router = useRouter()
     const primaryColor = "#F2994A"
     const tertiaryColor = "#EDEDED"
@@ -24,6 +24,8 @@ const Checkout = () => {
             const location = await AsyncStorage.getItem("userLocation")
             if (location) {
                 const JSONLocation = JSON.parse(location)
+                console.log(JSONLocation);
+                
                 setcurrentLocation(JSONLocation.currentAddress)
 
 
@@ -194,7 +196,7 @@ const Checkout = () => {
                     </View>
 
                 </View>
-                <Button textColor="white" style={{ borderRadius: 10, backgroundColor: "#F2994A", borderWidth: 0, paddingVertical: 2, justifyContent: "center" }} mode="outlined">
+                <Button onPress={()=>createOrder()} textColor="white" style={{ borderRadius: 10, backgroundColor: "#F2994A", borderWidth: 0, paddingVertical: 2, justifyContent: "center" }} mode="outlined">
                     Checkout
                 </Button>
 
