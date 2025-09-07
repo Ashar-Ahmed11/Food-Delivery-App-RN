@@ -14,7 +14,7 @@ const AppState = (props) => {
 
         console.log(credentials);
 
-        const response = await fetch("http://192.168.18.224:8000/api/auth/login", {
+        const response = await fetch("https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const AppState = (props) => {
     const getUser = async () => {
         setProfileLoader(true)
         const authToken = await AsyncStorage.getItem("authToken")
-        const response = await fetch("http://192.168.18.224:8000/api/auth/getUser", {
+        const response = await fetch("https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/auth/getUser", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -92,8 +92,8 @@ const AppState = (props) => {
 
         console.log("it is fired");
 
-        // setproductLoader(true)
-        const response = await fetch("http://192.168.18.224:8000/api/product/products", {
+        setproductLoader(true)
+        const response = await fetch("https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/product/products", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -104,7 +104,7 @@ const AppState = (props) => {
 
         const data = await response.json()
         console.log(data);
-        // setproductLoader(false)
+        setproductLoader(false)
         setProducts(data)
 
         // console.log(data);
@@ -115,7 +115,7 @@ const AppState = (props) => {
         //    localhost:8000/api/product/product/
 
 
-        const response = await fetch(`http://192.168.18.224:8000/api/product/product/${productID}`, {
+        const response = await fetch(`https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/product/product/${productID}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -131,11 +131,12 @@ const AppState = (props) => {
 
     }
     const [categories, setCategories] = useState([])
+    const [fabLoader, setfabLoader] = useState(false)
     const getCategories = async () => {
         //    localhost:8000/api/product/product/
 
-
-        const response = await fetch(`http://192.168.18.224:8000/api/category/categories`, {
+        setfabLoader(true)
+        const response = await fetch(`https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/category/categories`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -143,7 +144,9 @@ const AppState = (props) => {
 
         });
         const data = await response.json()
+
         setCategories(data)
+        setfabLoader(false)
 
         // console.log(data); 
 
@@ -155,7 +158,7 @@ const AppState = (props) => {
         //    localhost:8000/api/product/product/
 
 
-        const response = await fetch(`http://192.168.18.224:8000/api/product/products/${categoryID}`, {
+        const response = await fetch(`https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/product/products/${categoryID}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -232,7 +235,7 @@ const AppState = (props) => {
 
         const authToken = await AsyncStorage.getItem("authToken")
         if (authToken) {
-            const response = await fetch(`http://192.168.18.224:8000/api/product/addToFavourite/${productID}`, {
+            const response = await fetch(`https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/product/addToFavourite/${productID}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -262,7 +265,7 @@ const AppState = (props) => {
 
         const authToken = await AsyncStorage.getItem("authToken")
         if (authToken) {
-            const response = await fetch(`http://192.168.18.224:8000/api/product/removeFromFavourite/${productID}`, {
+            const response = await fetch(`https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/product/removeFromFavourite/${productID}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -292,7 +295,7 @@ const AppState = (props) => {
         if (location) {
 
 
-            const response = await fetch("http://192.168.18.224:8000/api/order/createOrder", {
+            const response = await fetch("https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/order/createOrder", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -348,7 +351,7 @@ const AppState = (props) => {
 
 
     return (
-        <AppContext.Provider value={{ createOrder,setProduct, setCategoryProducts, categoryProducts, getCategoryProduct, categories, removeFromFavourite, addToFavourite, subTotal, setsubTotal, cart, increaseQtyInCart, decreaseQtyInCart, removeFromCart, addToCart, productLoader, profileLoader, getUser, userDetails, isLoggedIn, setIsLoggedIn, login, getProducts, products, getProduct, product }}>
+        <AppContext.Provider value={{ fabLoader,createOrder,setProduct, setCategoryProducts, categoryProducts, getCategoryProduct, categories, removeFromFavourite, addToFavourite, subTotal, setsubTotal, cart, increaseQtyInCart, decreaseQtyInCart, removeFromCart, addToCart, productLoader, profileLoader, getUser, userDetails, isLoggedIn, setIsLoggedIn, login, getProducts, products, getProduct, product }}>
             {props.children}
         </AppContext.Provider>
     )

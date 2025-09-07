@@ -13,14 +13,15 @@ import ProductCard from "../../components/Cards";
 import Fab from "../../components/Fab";
 import HorizontalCard from "../../components/horizontalCard";
 import LoadingCard from "../../components/LoadingCard";
+import LoadingFAB from "../../components/loadingFAB";
 import AppContext from "../../context/appContext";
 const HomeScreen = () => {
     // const scrollRef = useRef(null)
     console.log(Constants.statusBarHeight);
-    
+
     const router = useRouter()
     const context = useContext(AppContext)
-    const { isLoggedIn, products, getProducts, productLoader, categories } = context
+    const { isLoggedIn, products, getProducts, productLoader, categories, fabLoader } = context
     // if (!isLoggedIn) {
     //     return <Redirect href="/signin" />
     // }
@@ -62,7 +63,7 @@ const HomeScreen = () => {
     const secondaryColor = "#838383"
     return (
         <View style={{ flex: 1 }}>
-            
+
             <StatusBar current style="dark" />
             <AnimatedScrollView
                 maxHeaderHeight={maxCustomHeaderHeight}
@@ -72,14 +73,14 @@ const HomeScreen = () => {
                 AnimationHeaderComponent={
 
                     <View
-                        onLayout={e => console.log('layout',setMaxCustomHeaderHeight(e.nativeEvent.layout.height))}
+                        onLayout={e => console.log('layout', setMaxCustomHeaderHeight(e.nativeEvent.layout.height))}
                         onContentSizeChange={e =>
                             console.log('contentSize', e.nativeEvent.contentSize)
                         }
 
                     >
-                      
-                        <View style={{ backgroundColor:"white",paddingTop:Constants.statusBarHeight,flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20}}>
+
+                        <View style={{ backgroundColor: "white", paddingTop: Constants.statusBarHeight, flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20 }}>
                             <View onTouchEnd={() => router.navigate("/address")} style={{ padding: 10 }}>
                                 <Text style={{ color: secondaryColor }}>
                                     Location
@@ -99,8 +100,8 @@ const HomeScreen = () => {
                         </View>
 
                         <View
-                        onLayout={e => console.log('layout',setsearchBarHeaight(e.nativeEvent.layout.height))}
-                        style={{paddingTop:Constants.statusBarHeight, paddingHorizontal: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", width: "100%" ,backgroundColor:"white"}}>
+                            onLayout={e => console.log('layout', setsearchBarHeaight(e.nativeEvent.layout.height))}
+                            style={{ paddingTop: Constants.statusBarHeight, paddingHorizontal: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", width: "100%", backgroundColor: "white" }}>
                             <Searchbar
                                 placeholder="Search"
                                 mode="bar"
@@ -122,54 +123,66 @@ const HomeScreen = () => {
 
 
                 {/* <ScrollView  > */}
-                    <ScrollView style={{ paddingTop: 10 }} horizontal contentContainerStyle={{ paddingHorizontal: 20 }}>
-                        {categories.map((element, index) => {
-                            return <Fab key={index} title={element.title} id={element._id} icon={element.icon} />
-                        })}
+                <ScrollView style={{ paddingTop: 10 }} horizontal contentContainerStyle={{ paddingHorizontal: 20 }}>
+                    {
+                        fabLoader ? <>
+                            <LoadingFAB/>
+                            <LoadingFAB/>
+                            <LoadingFAB/>
+                            <LoadingFAB/>
+                            <LoadingFAB/>
+                            <LoadingFAB/>
+                        </> : 
+                            categories.map((element, index) => {
+                                return <Fab key={index} title={element.title} id={element._id} icon={element.icon} />
+                            })
+                        
+                    }
 
-                    </ScrollView>
-                    <View>
-                        <View style={{ paddingVertical: 20, paddingHorizontal: 30, flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={{ fontFamily: "PoppinsSemibold" }}>Popular</Text>
-                            <Text style={{ color: secondaryColor, fontFamily: "Poppins" }}>See All</Text>
-                        </View>
-                        <View >
-                            <ScrollView horizontal style={{ paddingBottom: 40, paddingTop: 10 }} contentContainerStyle={{ paddingHorizontal: 20 }}>
-                                {productLoader ? <>
-                                    <LoadingCard />
-                                    <LoadingCard />
-                                    <LoadingCard />
-                                    <LoadingCard />
-                                </> : products.map((e, i) => {
-                                    return <ProductCard key={i} id={e._id} name={e.title} image={e.image} price={e.price} />
 
-                                })}
+                </ScrollView>
+                <View>
+                    <View style={{ paddingVertical: 20, paddingHorizontal: 30, flexDirection: "row", justifyContent: "space-between" }}>
+                        <Text style={{ fontFamily: "PoppinsSemibold" }}>Popular</Text>
+                        <Text style={{ color: secondaryColor, fontFamily: "Poppins" }}>See All</Text>
+                    </View>
+                    <View >
+                        <ScrollView horizontal style={{ paddingBottom: 40, paddingTop: 10 }} contentContainerStyle={{ paddingHorizontal: 20 }}>
+                            {productLoader ? <>
+                                <LoadingCard />
+                                <LoadingCard />
+                                <LoadingCard />
+                                <LoadingCard />
+                            </> : products.map((e, i) => {
+                                return <ProductCard key={i} id={e._id} name={e.title} image={e.image} price={e.price} />
 
-                                {/* <ProductCard name={"Airforce Jumpman"} image={"https://picsum.photos/710"} price={"300"} />
+                            })}
+
+                            {/* <ProductCard name={"Airforce Jumpman"} image={"https://picsum.photos/710"} price={"300"} />
                             <ProductCard name={"Airforce Jumpman"} image={"https://picsum.photos/750"} price={"100"} />
                             <ProductCard name={"Airforce Jumpman"} image={"https://picsum.photos/700"} price={"100"} /> */}
 
 
-                            </ScrollView>
+                        </ScrollView>
+                    </View>
+                </View>
+                <View>
+                    <View style={{ paddingVertical: 20, paddingHorizontal: 30, flexDirection: "row", justifyContent: "space-between" }}>
+                        <Text style={{ fontFamily: "PoppinsSemibold" }}>Popular</Text>
+                        <Text style={{ color: secondaryColor, fontFamily: "Poppins" }}>See All</Text>
+                    </View>
+                    <View >
+                        <View horizontal style={{ paddingBottom: 40, paddingTop: 10, paddingHorizontal: 20 }}>
+                            {products.map((e, i) => {
+                                return <HorizontalCard key={i} id={e._id} category={e.category.title} name={e.title} image={e.image} price={e.price} />
+
+                            })}
+                            {/* <HorizontalCard name={"Airforce Jumpman"} image={"https://picsum.photos/720"} price={"200"} /> */}
+
+
                         </View>
                     </View>
-                    <View>
-                        <View style={{ paddingVertical: 20, paddingHorizontal: 30, flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={{ fontFamily: "PoppinsSemibold" }}>Popular</Text>
-                            <Text style={{ color: secondaryColor, fontFamily: "Poppins" }}>See All</Text>
-                        </View>
-                        <View >
-                            <View horizontal style={{ paddingBottom: 40, paddingTop: 10, paddingHorizontal: 20 }}>
-                                {products.map((e, i) => {
-                                    return <HorizontalCard key={i} id={e._id} category={e.category.title} name={e.title} image={e.image} price={e.price} />
-
-                                })}
-                                {/* <HorizontalCard name={"Airforce Jumpman"} image={"https://picsum.photos/720"} price={"200"} /> */}
-
-
-                            </View>
-                        </View>
-                    </View>
+                </View>
 
                 {/* </ScrollView> */}
             </AnimatedScrollView>
