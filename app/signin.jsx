@@ -32,7 +32,7 @@ const SignIn = () => {
             <SafeAreaView style={{ paddingHorizontal: 20, height: "70%", justifyContent: "center" }}>
                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                     <Text style={{ fontFamily: "PoppinsSemibold" }} variant="headlineSmall">
-                        Welcome Back, Ashar
+                        Welcome Back
                     </Text>
                     <Text variant="bodyMedium" style={{ color: "grey" }}>
                         Welcome back! Please enter your details.
