@@ -37,6 +37,30 @@ const AppState = (props) => {
         // console.log(data);
 
     }
+    const signUp = async (credentials) => {
+
+        
+
+        const response = await fetch("https://fooddeliveryesserver-dot-arched-gear-433017-u9.de.r.appspot.com/api/auth/createuser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(credentials),
+            // …
+        });
+        const data = await response.json()
+        if (data.errors) {
+            data.errors.map((e) => { Toast.error(e.msg) })
+        }
+        else {
+            Toast.success("SignUp Successful")
+            await AsyncStorage.setItem("authToken", data.authToken)
+            setIsLoggedIn(true)
+        }
+        // console.log(data);
+
+    }
     const [userDetails, setUserDetails] = useState(null)
     const [profileLoader, setProfileLoader] = useState(false)
     const getUser = async () => {
@@ -351,7 +375,7 @@ const AppState = (props) => {
 
 
     return (
-        <AppContext.Provider value={{ fabLoader,createOrder,setProduct, setCategoryProducts, categoryProducts, getCategoryProduct, categories, removeFromFavourite, addToFavourite, subTotal, setsubTotal, cart, increaseQtyInCart, decreaseQtyInCart, removeFromCart, addToCart, productLoader, profileLoader, getUser, userDetails, isLoggedIn, setIsLoggedIn, login, getProducts, products, getProduct, product }}>
+        <AppContext.Provider value={{ signUp,fabLoader,createOrder,setProduct, setCategoryProducts, categoryProducts, getCategoryProduct, categories, removeFromFavourite, addToFavourite, subTotal, setsubTotal, cart, increaseQtyInCart, decreaseQtyInCart, removeFromCart, addToCart, productLoader, profileLoader, getUser, userDetails, isLoggedIn, setIsLoggedIn, login, getProducts, products, getProduct, product }}>
             {props.children}
         </AppContext.Provider>
     )
