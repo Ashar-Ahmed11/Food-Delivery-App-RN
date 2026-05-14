@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FavouriteCard from '../../components/favouriteCard';
 import AppContext from '../../context/appContext';
 const Favourite = () => {
     const router = useRouter()
     const context = useContext(AppContext)
-    const {userDetails} = context
+    const {userDetails, isLoggedIn} = context
     const primaryColor = "#F2994A"
     const tertiaryColor = "#EDEDED"
     const secondaryColor = "#838383"
@@ -33,10 +33,20 @@ const Favourite = () => {
                 </View>
             </SafeAreaView>
             <ScrollView>
-                {userDetails?.favourites.map((e)=>{
-                    return <FavouriteCard key={e._id} id={e._id} name={e.title} image={e.image} price={e.price} />
-                })}
-                
+                {
+                    isLoggedIn ?
+                        userDetails?.favourites.map((e) => {
+                            return <FavouriteCard key={e._id} id={e._id} name={e.title} image={e.image} price={e.price} />
+                        })
+                        :
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Ionicons name="heart-dislike-outline" size={100} color={secondaryColor} />
+                            <Text style={{ fontFamily: "PoppinsBold", fontSize: 20, textAlign: "center", marginHorizontal: 20, marginTop: 10, color: secondaryColor }}>Please login to view your favorite items.</Text>
+                            <TouchableOpacity onPress={() => router.navigate("signin")} style={{ backgroundColor: primaryColor, paddingVertical: 12, paddingHorizontal: 30, borderRadius: 10, marginTop: 20 }}>
+                                <Text style={{ fontFamily: "PoppinsSemibold", fontSize: 16, color: "white" }}>Login</Text>
+                            </TouchableOpacity>
+                        </View>
+                }
             </ScrollView>
         </View>
     )

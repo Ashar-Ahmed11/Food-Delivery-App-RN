@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import Entypo from '@expo/vector-icons/Entypo';
 import { ScrollView as AnimatedScrollView } from "@gemcook/react-native-animated-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from 'expo-constants';
 import { usePathname, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
-
-import Constants from 'expo-constants';
 import { useContext, useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Searchbar } from "react-native-paper";
+import { useCollapsibleHeader } from "react-navigation-collapsible";
 import ProductCard from "../../components/Cards";
 import Fab from "../../components/Fab";
 import HorizontalCard from "../../components/horizontalCard";
@@ -61,9 +61,23 @@ const HomeScreen = () => {
     const [maxCustomHeaderHeight, setMaxCustomHeaderHeight] = useState(null)
     const [searchBarHeaight, setsearchBarHeaight] = useState(null)
     const secondaryColor = "#838383"
-    return (
-        <View style={{ flex: 1 }}>
 
+     const { onScroll, containerPaddingTop, scrollIndicatorInsetTop, translateY } =
+    useCollapsibleHeader({
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: 'white',
+        },
+      },
+    });
+
+  const stickyHeaderHeight = 100;
+
+    return (
+       
+
+    
+        <View style={{ flex: 1 }}>
             <StatusBar current style="dark" />
             <AnimatedScrollView
                 maxHeaderHeight={maxCustomHeaderHeight}
@@ -96,12 +110,12 @@ const HomeScreen = () => {
 
                                 <Ionicons style={{ padding: 10, borderWidth: 1, borderColor: tertiaryColor, borderRadius: 100 }} name="bag-handle-outline" size={24} color={secondaryColor} />
 
+                                </View>
                             </View>
-                        </View>
 
                         <View
                             onLayout={e => console.log('layout', setsearchBarHeaight(e.nativeEvent.layout.height))}
-                            style={{ paddingTop: Constants.statusBarHeight, paddingHorizontal: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", width: "100%", backgroundColor: "white" }}>
+                            style={{ paddingTop:Constants.statusBarHeight,paddingHorizontal: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", width: "100%", backgroundColor: "white" }}>
                             <Searchbar
                                 placeholder="Search"
                                 mode="bar"

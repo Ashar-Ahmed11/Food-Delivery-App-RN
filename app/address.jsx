@@ -57,26 +57,46 @@ const Address = () => {
     console.log('function started')
 
     setCurrentAddress("Loading")
-
+    let {granted:permissionStatus} = await Location.getForegroundPermissionsAsync();
+    console.log(permissionStatus);
+    
+    if(!permissionStatus){
+      console.log("called");
+      
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Permission to access location was denied');
       return;
     }
+    }
 
-    let newLocation = await Location.getCurrentPositionAsync({});
+    let newLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation});
     const reverseGeoCode = await Location.reverseGeocodeAsync({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude })
-    setCurrentAddress(reverseGeoCode[0].formattedAddress)
+    console.log(reverseGeoCode);
+    let formattedLocation =
+  reverseGeoCode[0].formattedAddress ||
+  [
+    reverseGeoCode[0].streetNumber,
+    reverseGeoCode[0].street,
+    reverseGeoCode[0].city,
+    reverseGeoCode[0].region,
+    reverseGeoCode[0].postalCode,
+    reverseGeoCode[0].country,
+  ]
+    .filter(Boolean)
+    .join(", ");
+    setCurrentAddress(formattedLocation)
 
     setLocation({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude, latitudeDelta: 0.003608739935479832, longitudeDelta: 0.0017907097935676575 });
 
 
   }
 
-  const getCurrentLocationByPlaces = async (newLocation) => {
+  const getCurrentLocationByPlaces = async (newLocation, formattedAddress) => {
 
     setLocation({ ...location, latitude: newLocation.latitude, longitude: newLocation.longitude });
     mapRef.current.animateToRegion(location, 3 * 500);
+    setCurrentAddress(formattedAddress);
 
   }
 
@@ -271,8 +291,26 @@ const Address = () => {
 
   const onRegionChangeCompleteFunction = async (e) => {
     setCurrentAddress("Loading")
+    console.log("region complete started");
+      // console.log(e);
+      
     const reverseGeoCode = await Location.reverseGeocodeAsync({ latitude: e.latitude, longitude: e.longitude })
-    setCurrentAddress(reverseGeoCode[0].formattedAddress)
+    console.log(reverseGeoCode)
+    let formattedLocation =
+  reverseGeoCode[0].formattedAddress ||
+  [
+    reverseGeoCode[0].streetNumber,
+    reverseGeoCode[0].street,
+    reverseGeoCode[0].city,
+    reverseGeoCode[0].region,
+    reverseGeoCode[0].postalCode,
+    reverseGeoCode[0].country,
+  ]
+    .filter(Boolean)
+    .join(", ");
+    // console.log(reverseGeoCode);
+    
+    setCurrentAddress(formattedLocation)
   }
 
 
@@ -320,7 +358,7 @@ const Address = () => {
 
                 style={{ input: { borderColor: tertiaryColor, backgroundColor: "#FBFBFB" } }}
                 apiKey="AIzaSyATlZqtixYhhOdj3X2_fShcV7ftf_ulzWs"
-                onPlaceSelect={(e) => getCurrentLocationByPlaces(e.details.location)}
+                onPlaceSelect={(e) => {getCurrentLocationByPlaces(e.details.location,e.details.formattedAddress)}}
                 placeHolderText='Search'
                 detailsFields={['displayName', 'formattedAddress', 'location', 'id']}
                 fetchDetails={true}
