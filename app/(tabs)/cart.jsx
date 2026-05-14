@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useContext, useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -8,7 +8,7 @@ import CartCard from '../../components/cartCard';
 import AppContext from '../../context/appContext';
 const Cart = () => {
     const context = useContext(AppContext)
-    const { cart,subTotal,setsubTotal } = context
+    const { cart,subTotal,setsubTotal, isLoggedIn } = context
     console.log('THis is cart from cart:', cart);
 
     const initialValue = 0;
@@ -59,21 +59,34 @@ const Cart = () => {
 
                 </View>
             </SafeAreaView>
-            <ScrollView>
-                {cart.map((e, i) => { return <CartCard product={e} key={e.prod._id} /> }
+                        <ScrollView>
+                {cart.length === 0 ? (
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", height: 500 }}>
+                        <Ionicons name="cart-outline" size={100} color={secondaryColor} />
+                        <Text style={{ fontFamily: "PoppinsBold", fontSize: 20, textAlign: "center", marginHorizontal: 20, marginTop: 10, color: secondaryColor }}>Your cart is empty.</Text>
+                        <Text style={{ fontFamily: "PoppinsRegular", fontSize: 16, textAlign: "center", marginHorizontal: 20, color: secondaryColor }}>Add some delicious food to your cart!</Text>
+                    </View>
+                ) : (
+                    cart.map((e, i) => { return <CartCard product={e} key={e.prod._id} /> })
                 )}
-                {/* <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/720"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/721"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/722"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/723"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/724"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/725"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/726"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/727"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/728"} price={"200"} />
-                <CartCard name={"Airforce Jumpman"} image={"https://picsum.photos/729"} price={"200"} /> */}
             </ScrollView>
-            <View style={{
+            {cart.length > 0 && (
+                <View style={{
+                    position: "absolute", bottom: 0, backgroundColor: "white", width: "100%", padding: 20, borderTopLeftRadius: 20, borderTopRightRadius: 20, flexDirection: "row", justifyContent: "space-between", borderWidth: 1, borderColor: tertiaryColor
+                }}>
+                    <View>
+                        <Text style={{ color: secondaryColor }}>Total Price</Text>
+                        <Text style={{ fontFamily: "PoppinsSemibold", fontSize: 20 }}>
+                            PKR {subTotal}
+                        </Text>
+                    </View>
+                    <Button textColor="white" style={{ borderRadius: 10, backgroundColor: primaryColor, borderWidth: 0, paddingVertical: 2, justifyContent: "center" }} mode="outlined" onPress={() => isLoggedIn ? router.navigate("/checkout") : router.navigate("/signin")}>
+                        Checkout
+                    </Button>
+
+                </View>
+            )}
+            {/* <View style={{
                 position: "absolute", bottom: 0, backgroundColor: "white", width: "100%", padding: 20, borderTopLeftRadius: 20, borderTopRightRadius: 20, flexDirection: "row", justifyContent: "space-between", borderWidth: 1, borderColor: tertiaryColor
             }}>
                 <View>
@@ -87,7 +100,7 @@ const Cart = () => {
                 </Button>
                 </Link>
 
-            </View>
+            </View> */}
         </View>
     )
 }
